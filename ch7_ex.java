@@ -6,7 +6,8 @@ import java.util.concurrent.*;
 ////////////////////////////////////////////////////////////////////////////////
 class BankThread extends Thread
 {
-    private Account             sharedAccount;    // threads from the same bank work on the same account
+    // threads from the same bank work on the same account
+    private Account             sharedAccount;   
     private Exchanger<Account>  exchanger;         
     private CyclicBarrier       barrier;
     private int                 transaction = 1;
@@ -110,7 +111,8 @@ class Account {
         // Report thread activity (see example output)
         int amount = new Random().nextInt(1,101);
         balance += amount;
-        System.out.printf("%s >> transaction %d   %s %+4d   balance = %4d\n",Thread.currentThread().getName(),transaction,name,amount,balance);
+        System.out.printf("%s >> transaction %d   %s %+4d   balance = %4d\n"
+                        ,Thread.currentThread().getName(),transaction,name,amount,balance);
     }
      
     public synchronized void withdraw(int transaction) 
@@ -122,11 +124,14 @@ class Account {
                 amount = balance; 
             }
             balance -= amount;
-            System.out.printf("%s >> transaction %d   %s %4d   balance = %4d\n",Thread.currentThread().getName(),transaction,name,-amount,balance);
+            System.out.printf("%s >> transaction %d   %s %4d   balance = %4d\n"
+                                ,Thread.currentThread().getName(),transaction,name
+                                ,-amount,balance);
         }
         else 
         {
-            System.out.printf("%s >> transaction %d   %s is closed\n",Thread.currentThread().getName(),transaction, name);
+            System.out.printf("%s >> transaction %d   %s is closed\n"
+                                ,Thread.currentThread().getName(),transaction, name);
         }
     }
 
@@ -146,7 +151,8 @@ public class Ex6 {
                                 new Account(".".repeat(35) + "account B", 0) };   
 
         Scanner keyboardScan = new Scanner(System.in);
-        System.out.printf("%s  >>  Enter #threads per bank = \n", Thread.currentThread().getName());  
+        System.out.printf("%s  >>  Enter #threads per bank = \n"
+                        , Thread.currentThread().getName());  
         int num = keyboardScan.nextInt();
 
         
@@ -202,7 +208,8 @@ public class Ex6 {
         System.out.printf("%s >> \n",Thread.currentThread().getName());
         for(Account acc : accounts)
         {
-            System.out.printf("%s >> final balance %s = %d \n",Thread.currentThread().getName(), acc.getName(),acc.getBalance());
+            System.out.printf("%s >> final balance %s = %d \n"
+                    ,Thread.currentThread().getName(), acc.getName(),acc.getBalance());
         }
         
     }
